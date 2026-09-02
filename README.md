@@ -116,5 +116,4 @@ The SIG should favor solutions that:
 * Improve software safety and maintainability
 * It can be reused across different RDK-B platforms
 
-```
-```
+
