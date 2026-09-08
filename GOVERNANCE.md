@@ -27,6 +27,7 @@ Proposed operating model pending SIG approval:
 Proposed operating model pending SIG approval:
 
 - Participation is open to contributors interested in Rust in the RDK-B ecosystem.
+- Contributors who need access to the `rust-developers` GitHub group should open a `CMF_support` ticket requesting inclusion.
 - The SIG may maintain an informal active-contributor set based on recent meeting participation, repository activity, or proposal review.
 - Contributors should keep discussion technical, concise, and traceable.
 - Decisions, proposals, and action items should be recorded in this repository.
@@ -41,14 +42,17 @@ Open approval points:
 Proposed operating model pending SIG approval:
 
 - A chair is responsible for meeting facilitation, agenda coordination, and decision confirmation.
-- A co-chair provides backup coverage and helps maintain meeting continuity.
-- One or more repository maintainers are responsible for keeping agendas, minutes, proposals, and governance documents current.
+- A co-chair provides backup coverage and helps maintain meeting continuity and logistics.
+- A technical project manager arranges meetings, helps the co-chair with logistics, and formalizes communications across the group.
+- The chair, co-chair, and technical project manager serve as repository maintainers and are responsible for keeping agendas, minutes, proposals, and governance documents current.
+- For the initial operating period, chair and co-chair selection should prefer the main contributors and most senior technical members currently driving SIG formation, specifically Justin and Jose.
+- Chair and co-chair roles should be ongoing positions that continue until the current role holder steps down or is no longer able to serve.
 - These roles support the SIG process and do not replace technical consensus.
 
 Open approval points:
 
-- How chairs and maintainers are selected.
-- Whether roles are time-limited or rotating.
+- Whether Justin and Jose should serve as the initial chair and co-chair, or otherwise as the initial leadership pair for the SIG.
+- How the SIG records a role transition when a chair or co-chair steps down (PSC consultation with a proposal).
 
 ## Meetings
 
