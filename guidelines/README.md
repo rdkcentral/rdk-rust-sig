@@ -6,7 +6,9 @@ Guidelines are intended to describe recommended practices for Rust components in
 
 ## Available Guidelines
 
-- [Continuous Integration](ci.md) - recommended CI checks for Rust component repositories.
+| Guideline | Description | Maintainer | Approval Status |
+| --- | --- | --- | --- |
+| [Continuous Integration](ci.md) | Recommended CI checks for Rust component repositories. | GitHub: @torrentius | Proposed |
 
 ## Status
 
