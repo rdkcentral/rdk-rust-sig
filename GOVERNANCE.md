@@ -1,20 +1,18 @@
 # Governance
 
-Status: draft proposed operating model. Nothing in this document should be treated as an adopted SIG rule until it is approved and recorded by the SIG.
+Status: partially approved operating model. Adopted points are recorded in [`meetings/2026-09-09.md`](meetings/2026-09-09.md); unresolved items remain listed as open approval points.
 
 ## Purpose
 
 The RDK-B Rust SIG coordinates discussion, proposals, and engineering guidance for using Rust within RDK-B.
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - The SIG is a technical coordination and recommendation body.
 - The SIG is not intended to be a mandatory approval gate for every Rust-related implementation.
 - The SIG should improve consistency, traceability, and reuse across Rust-related work in RDK-B.
+- The SIG may define stronger rules in the future when those rules are reviewed and approved by the SIG.
 
-Open approval points:
-
-- Whether the SIG should operate as an advisory forum, a recommendation body, or a formal approval gate for Rust-related work in RDK-B.
 
 ## Responsibilities
 
@@ -26,28 +24,21 @@ Proposed operating model pending SIG approval:
 - Track meeting decisions, action items, and task-force outcomes.
 - Coordinate with related architecture, platform, and security work where needed.
 
-Open approval points:
-
-- Which responsibilities should be included in the SIG's initial operating model.
 
 ## Membership And Participation
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Participation is open to contributors interested in Rust in the RDK-B ecosystem.
 - Contributors who need access to the `rust-developers` GitHub group should open a `CMF_support` ticket requesting inclusion.
 - The SIG may maintain an informal active-contributor set based on recent meeting participation, repository activity, or proposal review.
+- The technical project manager should collect a list of interested participants and contact relevant companies.
 - Contributors should keep discussion technical, concise, and traceable.
 - Decisions, proposals, and action items should be recorded in this repository.
 
-Open approval points:
-
-- Whether the SIG wants a formal member list.
-- How active-contributor status should be recognized.
-
 ## Roles
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - A chair is responsible for meeting facilitation, agenda coordination, and decision confirmation.
 - A co-chair provides backup coverage and helps maintain meeting continuity and logistics.
@@ -70,54 +61,45 @@ Open approval points:
 
 ## Meetings
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - The SIG meets biweekly for 60 minutes during the initial operating period.
-- The cadence should be reviewed after the first quarter of operation.
+- Meetings may be cancelled when there is no agenda content.
+- The meeting cadence should be reviewed next year.
+
+Proposed operating model pending SIG approval:
+
 - Meetings should have a published agenda.
 - Meeting participants must state or display their affiliation and GitHub ID during SIG calls using the format `[affiliation] @github-id` or `[affiliation] name`.
 - Meeting records should be stored under `meetings/`.
 - Minutes should capture agenda, attendees, discussion summary, decisions, action items, open questions, and references.
 
-Open approval points:
-
-- Whether the initial cadence should be biweekly or monthly.
-- Whether special topic meetings should be separate from the regular SIG cadence.
-- Whether meeting participants must state or display their affiliation and GitHub ID during SIG calls using the format `[affiliation] @github-id` or `[affiliation] name`.
-
 ## Agenda Preparation
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - The chair or co-chair publishes a draft agenda at least five business days before the meeting.
 - Contributors may propose additions or changes until two business days before the meeting.
+- Contributors may raise agenda topics through Slack or the proposal flow.
 - Agenda items should be framed as discussion, decision, or status topics.
 - Topics requiring a decision should include a short written problem statement before the meeting when practical.
 
-Open approval points:
-
-- Whether draft agendas should be published at least five business days before each meeting.
-- Whether contributors may propose agenda changes until two business days before each meeting.
-
 ## Decision-Making
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - The SIG should prefer rough consensus based on technical merit, portability, resource impact, and deployment practicality.
 - Decisions may be made in meetings or asynchronously in Pull Requests when the context is fully documented.
 - The recorded result becomes the authoritative SIG decision once it is written in meeting notes or in an approved Pull Request.
 - Members of the `rust-sig-maintainers` GitHub group may approve Pull Requests based on documented SIG consensus.
-- If consensus cannot be reached in a reasonable time, the SIG may use a simple vote among active contributors participating in the decision.
+- Important decisions may use a formal vote or agenda straw ballot when rough consensus is not sufficient.
 
-Open approval points:
-
-- Whether rough consensus should be the default decision-making method.
-- Whether decisions may be made asynchronously in Pull Requests when the context is fully documented.
-- Whether members of the `rust-sig-maintainers` GitHub group may approve Pull Requests based on documented SIG consensus.
-- Whether any decision classes require a stronger approval rule.
-- How active contributors are counted for a fallback vote.
 
 ## Meeting Minutes And Action Tracking
+
+Recorded SIG decision, 2026-09-09:
+
+- Meeting minutes should be tracked in Git.
 
 Proposed operating model pending SIG approval:
 
@@ -126,25 +108,21 @@ Proposed operating model pending SIG approval:
 - Action items should include an owner, a target date when possible, and a status.
 - Open questions should remain visible until resolved, deferred, or withdrawn.
 
-Open approval points:
-
-- Whether meeting minutes should be concise summaries stored in `meetings/`.
-- Whether action items should be recorded with an owner, target date when possible, and status.
 
 ## Technical Proposals
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Proposals belong under `proposals/`.
 - A proposal should be used for topics that introduce shared guidance, reusable infrastructure, or cross-team architectural impact.
+- Proposals are the trigger documents for new technical projects to be discussed in SIG meetings and for starting task-force groups.
+- The SIG should prepare a standard template for new proposals.
+
+Proposed operating model pending SIG approval:
+
 - Proposal content should follow the repository guidance for problem statement, motivation, proposed approach, alternatives, integration, security, resource impact, portability, and open questions.
 - A proposal should not be described as accepted until that outcome is recorded by the SIG.
 
-Open approval points:
-
-- Whether proposals should be used for topics that introduce shared guidance, reusable infrastructure, or cross-team architectural impact.
-- Which proposal categories require live meeting review.
-- Whether proposal approval requires explicit maintainer sign-off in addition to recorded SIG consensus.
 
 ## Guidelines
 
@@ -169,6 +147,11 @@ Proposed operating model pending SIG approval:
 - Task-force work should be managed through a GitHub Project created ad hoc for the SIG task-force group.
 - Task forces should report outcomes back to the SIG for review and decision.
 
+Recorded SIG decisions, 2026-09-09:
+
+- The SIG creates a CI task force to maintain reusable Rust CI workflow templates and supporting files under `task-forces/ci/`.
+- The SIG should prepare a standard template for task-force records.
+
 Open approval points:
 
 - Whether task forces should be created only with a named owner, defined scope, expected deliverable, and review date.
@@ -180,18 +163,17 @@ Open approval points:
 
 ## Communication And GitHub Workflow
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
-- Use mail or Slack for exploratory topics and agenda input.
+- Use Slack for exploratory topics and agenda input.
+- Use email as a secondary communication channel.
 - Use Issues for action items, tracked work, and follow-up tasks.
 - Use Pull Requests for governance updates, meeting records, guidelines, and proposals.
+
+Proposed operating model pending SIG approval:
+
 - Keep `main` as the canonical branch and use short-lived branches for changes.
 
-Open approval points:
-
-- Whether to use mail or Slack for exploratory topics and agenda input, Issues for action items, and Pull Requests for document changes and proposal approval.
-- Whether GitHub Discussions should be enabled for this repository.
-- Whether specific labels or templates are needed for SIG actions, proposals, and task forces.
 
 ## Repository Changes
 
