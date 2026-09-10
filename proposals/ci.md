@@ -2,6 +2,8 @@
 
 Status: proposed
 
+Type: guideline
+
 ## Problem
 
 Rust projects in the RDK-B stack may adopt different CI checks, workflow layouts, and dependency policy gates unless a common default pipeline is defined.
@@ -16,7 +18,7 @@ The pipeline should be suitable for transfer to the CMF team so it can be offere
 
 ## Proposed Approach
 
-Define a reusable GitHub Actions CI pipeline for Rust repositories based on the workflow templates maintained by the Rust SIG CI task force.
+Define a reusable GitHub Actions CI pipeline for Rust repositories based on standard Cargo tooling and portable GitHub Actions patterns.
 
 The default pipeline should include:
 
@@ -31,7 +33,7 @@ The pipeline should also provide optional checks that repositories can enable ba
 - feature-combination testing with `cargo hack`
 - test coverage reporting with `cargo llvm-cov`
 
-The SIG should maintain the reference workflow templates and supporting files under `task-forces/ci/github-actions/`. Once approved, the SIG should transfer the default CI package, adoption notes, and required configuration guidance to the CMF team.
+Once approved, the SIG should transfer the default CI package, adoption notes, and required configuration guidance to the CMF team.
 
 The CMF team can then use the approved pipeline as the default CI baseline for Rust repositories, while component teams retain the ability to tune package selection, feature flags, target validation, and optional checks.
 
@@ -108,5 +110,3 @@ The workflow templates should avoid vendor-specific assumptions unless a reposit
 ## References
 
 - [`guidelines/ci.md`](../guidelines/ci.md)
-- [`task-forces/ci/README.md`](../task-forces/ci/README.md)
-- [`task-forces/ci/github-actions/workflows/README.md`](../task-forces/ci/github-actions/workflows/README.md)
