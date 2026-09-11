@@ -16,7 +16,7 @@ Recorded SIG decision, 2026-09-09:
 
 ## Responsibilities
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Review and refine SIG goals, scope, and priorities.
 - Discuss Rust-related technical proposals and integration patterns.
@@ -66,9 +66,6 @@ Recorded SIG decision, 2026-09-09:
 - The SIG meets biweekly for 60 minutes during the initial operating period.
 - Meetings may be cancelled when there is no agenda content.
 - The meeting cadence should be reviewed next year.
-
-Proposed operating model pending SIG approval:
-
 - Meetings should have a published agenda.
 - Meeting participants must state or display their affiliation and GitHub ID during SIG calls using the format `[affiliation] @github-id` or `[affiliation] name`.
 - Meeting records should be stored under `meetings/`.
@@ -100,9 +97,6 @@ Recorded SIG decision, 2026-09-09:
 Recorded SIG decision, 2026-09-09:
 
 - Meeting minutes should be tracked in Git.
-
-Proposed operating model pending SIG approval:
-
 - Meeting minutes should summarize decisions and reasoning rather than provide a transcript.
 - Minutes should be published promptly after the meeting.
 - Action items should include an owner, a target date when possible, and a status.
@@ -116,17 +110,14 @@ Recorded SIG decision, 2026-09-09:
 - Proposals belong under `proposals/`.
 - A proposal should be used for topics that introduce shared guidance, reusable infrastructure, or cross-team architectural impact.
 - Proposals are the trigger documents for new technical projects to be discussed in SIG meetings and for starting task-force groups.
-- The SIG should prepare a standard template for new proposals.
-
-Proposed operating model pending SIG approval:
-
+- The SIG should use a standard template for new proposals `proposals/TEMPLATE.md`.
 - Proposal content should follow the repository guidance for problem statement, motivation, proposed approach, alternatives, integration, security, resource impact, portability, and open questions.
 - A proposal should not be described as accepted until that outcome is recorded by the SIG.
 
 
 ## Guidelines
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Agreed engineering guidance belongs under `guidelines/`.
 - Guidelines should reflect accepted SIG decisions or stable implementation experience.
@@ -135,28 +126,17 @@ Proposed operating model pending SIG approval:
 
 ## Task Forces
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Focused initiatives may be organized under `task-forces/`.
-- A task force may be triggered by a SIG proposal or by work already initiated in one or more components of the RDK-B stack.
-- A task force may be used to document resource needs and request reserved capacity from RDKM or any other contributor.
-- A task force should be created only when it has a named owner, a defined scope, an expected deliverable, and a review date.
-- Task-force work should be managed through a GitHub Project created ad hoc for the SIG task-force group.
 - Task forces should report outcomes back to the SIG for review and decision.
-
-Recorded SIG decisions, 2026-09-09:
-
-- The SIG creates a CI task force to maintain reusable Rust CI workflow templates and supporting files under `task-forces/ci/`.
 - The SIG should prepare a standard template for task-force records.
-
-Open approval points:
-
-- Whether task forces should be created only with a named owner, defined scope, expected deliverable, and review date.
-- Whether task forces may be triggered by a SIG proposal or by work already initiated in one or more components of the RDK-B stack.
-- Whether task forces may be used to document resource needs and request reserved capacity from RDKM or any other contributor.
-- Whether task-force work should be managed through a GitHub Project created ad hoc for the SIG task-force group.
-- Whether task-force owners must also be repository maintainers.
-- How long an inactive task force remains active before it is closed or merged back into general SIG work.
+- A task force may be created when triggered by a SIG proposal or by work already initiated in one or more components of the RDK-B stack.
+- A task force may document resource needs and request reserved capacity from RDKM or any other contributor where needed.
+- Task-force work should be managed through a GitHub Project created ad hoc for the SIG task-force group.
+- A task force must have a named owner, a defined scope, an expected deliverable, and a review date.
+- A task force may own dedicated repositories when its work includes component development or other implementation artifacts that do not belong in the SIG coordination repository.
+- A task force is concluded when its defined work and expected deliverables are complete.
 
 ## Communication And GitHub Workflow
 
@@ -166,15 +146,12 @@ Recorded SIG decision, 2026-09-09:
 - Use email as a secondary communication channel.
 - Use Issues for action items, tracked work, and follow-up tasks.
 - Use Pull Requests for governance updates, meeting records, guidelines, and proposals.
-
-Proposed operating model pending SIG approval:
-
 - Keep `main` as the canonical branch and use short-lived branches for changes.
 
 
 ## Repository Changes
 
-Proposed operating model pending SIG approval:
+Recorded SIG decision, 2026-09-09:
 
 - Follow the contribution process in `CONTRIBUTING.md`.
 - Keep repository content concise, technical, and linked to decisions where possible.
