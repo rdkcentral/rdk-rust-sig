@@ -132,9 +132,6 @@ Proposed operating model pending SIG approval:
 - Guidelines should reflect accepted SIG decisions or stable implementation experience.
 - Guidelines should be revised through Pull Requests that preserve traceability to discussions, proposals, or meeting decisions.
 
-Open approval points:
-
-- Whether to approve `guidelines/ci.md` as the full CI guideline for Rust component repositories, including the documented Rust tooling coverage.
 
 ## Task Forces
 
