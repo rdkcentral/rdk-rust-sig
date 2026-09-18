@@ -130,7 +130,6 @@ All action items must be created and tracked in the [RDK Central Rust SIG GitHub
 - How will repositories request and review exceptions from mandatory checks?
 - Will coverage remain advisory, or will a minimum threshold be considered later?
 - How will target-device validation be associated with the GitHub CI result?
-- Which repositories will be used to validate the baseline and optional checks?
 
 ## References
 
