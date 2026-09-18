@@ -1,4 +1,4 @@
-# CI
+# Continuous Integration Guideline
 
 Status: proposed
 
@@ -6,107 +6,173 @@ Type: guideline
 
 ## Problem
 
-Rust projects in the RDK-B stack may adopt different CI checks, workflow layouts, and dependency policy gates unless a common default pipeline is defined.
+The `ieee1905-rs` repository already has GitHub Actions workflows for Rust code quality, testing, dependency compliance, security, unit-test coverage, and process memory reporting. These workflows have not yet been reviewed by the SIG as a common baseline for other RDK-B Rust repositories.
 
-This can lead to inconsistent review signals, duplicated workflow maintenance, uneven dependency security coverage, and extra onboarding work for new Rust repositories.
+Without a coordinated review, new Rust repositories may adopt different checks and reporting formats, duplicate workflow maintenance, or omit useful pull-request signals such as dependency compliance, known vulnerabilities, unit-test coverage, and resource impact.
 
 ## Motivation
 
-A common GitHub CI pipeline gives Rust component repositories a shared baseline for build health, formatting, linting, testing, dependency security, dependency policy, feature validation, and coverage reporting.
+The existing IEEE1905 workflows provide a practical starting point and reduce the implementation effort required to define a common CI approach. A focused task force can collect comments, make agreed adjustments, document limitations, and prepare the reviewed workflows for CMF adoption.
 
-The pipeline should be suitable for transfer to the CMF team so it can be offered or applied by default when new Rust projects are created.
+This work is expected to improve consistency, dependency governance, security visibility, test visibility, and resource awareness during pull-request review.
 
 ## Proposed Approach
 
-Define a reusable GitHub Actions CI pipeline for Rust repositories based on standard Cargo tooling and portable GitHub Actions patterns.
+Adopt a continuous integration guideline for Rust repositories in the RDK-B stack, using the existing `ieee1905-rs` workflows as the initial reference implementation.
 
-The default pipeline should include:
+The guideline will define:
 
-- formatting checks with `cargo fmt --check`
-- lint checks with `cargo clippy`
-- host-side tests with `cargo test`
-- dependency vulnerability checks with `cargo audit`
+- Common baseline checks and checks that remain optional or repository-specific.
+- Pull-request reporting for compliance, security, unit-test coverage, and resource information.
+- Configuration expectations for package selection, exclusions, feature flags, branch triggers, and workflow permissions.
+- Portability boundaries between shared host-side CI and component-specific target validation.
+- The review and exception process for repositories that cannot apply a baseline check.
 
-The pipeline should also provide optional checks that repositories can enable based on risk, repository maturity, and CI budget:
+A linked Continuous Integration Task Force will review the existing workflows, collect comments, apply agreed changes, and prepare the guideline and workflow package for final SIG review and CMF handoff.
 
-- dependency license, ban, and source checks with `cargo deny`
-- feature-combination testing with `cargo hack`
-- test coverage reporting with `cargo llvm-cov`
+Proposed task-force ownership and dates:
 
-Once approved, the SIG should transfer the default CI package, adoption notes, and required configuration guidance to the CMF team.
+- Task-force owners: `@torrentius`, `@matrixdev`, and `@SerhiiShchudlo` from the Rust RDKM team
+- CMF owner: `@sbarre01`
+- Task-force review date: 2026-10-15
+- Final review target: 2026-10-30
+- CMF handoff target: 2026-10-30
 
-The CMF team can then use the approved pipeline as the default CI baseline for Rust repositories, while component teams retain the ability to tune package selection, feature flags, target validation, and optional checks.
+The task force will:
+
+- Review the existing workflows and collect comments from the Rust SIG, CMF, and relevant repository maintainers.
+- Define which checks form the common baseline and which remain optional or repository-specific.
+- Define how pull requests report compliance, security, unit-test coverage, and resource information.
+- Apply agreed changes and document configuration, permissions, exceptions, and known limitations.
+- Prepare the reviewed CI package and guidance for CMF handoff.
+
+The initial reference implementation contains the following workflows:
+
+### Code Quality and Testing
+
+- `rust-cargo-clippy.yml` reports Rust lint and code-quality issues with `cargo clippy`.
+- `rust-cargo-tests.yml` runs workspace unit tests, with IEEE1905-specific exclusions for RBUS crates that require platform dependencies.
+- `rust-cargo-hack.yml` exercises supported feature combinations for the `ieee1905` package.
+
+### Compliance
+
+- `rust-cargo-deny.yml` enforces dependency license, banned-crate, allowed-source, and advisory policies defined in `deny.toml`.
+
+### Security
+
+- `rust-cargo-audit.yml` identifies known vulnerabilities in direct and transitive Rust dependencies.
+
+### Pull Request Review Information
+
+- `rust-cargo-coverage.yml` generates a unit-test coverage summary and posts it on the pull request.
+- `rust-rss-usage-check.yml` runs the release binary, reads Linux process memory information from `/proc`, and posts an RSS report on the pull request.
+
+The CLA and IEEE1905 on-demand functional-test workflows are not part of this proposal.
+
+## Task-Force Mapping
+
+| Guideline Requirement | Task-Force Work | Expected Output |
+| --- | --- | --- |
+| Define common and optional CI checks | Review the existing IEEE1905 code-quality, testing, compliance, and security workflows | Agreed classification of mandatory, optional, and repository-specific checks |
+| Provide useful pull-request review signals | Review coverage, RSS, compliance, and vulnerability reporting | Documented PR checks and reporting behavior |
+| Keep repository-specific settings configurable | Identify IEEE1905 package names, RBUS exclusions, feature flags, branches, and executable commands | Configuration and adoption guidance |
+| Define portability boundaries | Record what shared host-side workflows do not test | Explicit exclusions for platform-specific FFI, dependencies, SoC integration, and device services |
+| Support adoption by new Rust repositories | Coordinate final review with the SIG and CMF | Reviewed guideline and workflow package ready for CMF handoff |
+
+## Expected Deliverables
+
+- Reviewed versions of the listed Rust CI workflows.
+- A decision identifying mandatory, optional, and repository-specific checks.
+- Configuration guidance for package selection, exclusions, feature flags, branch triggers, workflow permissions, and pull-request reporting.
+- Documentation of unsupported platform-specific validation and the responsibility of component repositories.
+- A reviewed CI package and adoption guidance ready for CMF handoff.
+- A task-force outcome reported to the SIG for final guideline review.
+
+## Workforce and Resources
+
+The workflows are already in place, so the remaining effort is expected to be limited. One task-force owner will coordinate comments, agreed changes, final review, and handoff. Other proposed owners, SIG members, CMF representatives, and repository maintainers will provide review input through the normal review process.
+
+No dedicated test devices or labs are required. The work requires existing GitHub repository and GitHub Actions access.
+
+## Requested Decisions
+
+The SIG is asked to decide whether to:
+
+- Approve the proposed continuous integration guideline direction.
+- Use the linked Continuous Integration Task Force, with the proposed owners and dates, to review and prepare the guideline deliverables.
+- Use the existing `ieee1905-rs` workflows as the initial reference implementation.
+- Treat Clippy, host-side tests, dependency compliance, and vulnerability checks as common baseline candidates.
+- Treat feature testing, unit-test coverage, and RSS reporting as configurable checks based on repository applicability and CI cost.
+- Exclude platform-specific FFI, platform-bound dependencies, SoC integrations, and device-service behavior from the shared host-side workflow validation.
+- Prepare the reviewed workflow package for CMF adoption after final SIG review.
 
 ## Alternatives Considered
 
 Each Rust repository defines its own CI:
 
 - maximizes local flexibility
-- increases duplicated maintenance
-- makes review and security signals inconsistent across RDK-B Rust projects
+- duplicates workflow maintenance
+- produces inconsistent review, compliance, and security signals
 
-Only document recommendations without reusable workflow templates:
+Publish guidance without reviewing the existing workflows:
 
-- keeps the SIG guidance lightweight
-- still leaves project teams to reimplement the same checks repeatedly
-- increases the chance that checks drift from the guideline
+- requires less coordination
+- leaves repository teams to interpret and reimplement the guidance
+- does not benefit from the existing IEEE1905 implementation experience
 
-Make every check mandatory for every Rust repository:
+Make every existing IEEE1905 check mandatory:
 
 - maximizes consistency
-- may be too expensive for large workspaces or target-bound components
-- may block adoption where target services, FFI, or cross-compilation constraints require staged validation
+- ignores differences in repository structure, feature use, executable availability, and CI budget
+- may make package-specific checks such as RSS reporting unsuitable for libraries or platform-bound components
 
 ## RDK-B Integration
 
-The common pipeline should be designed for Rust component repositories in the RDK-B stack, including repositories that build host-side tests in GitHub Actions and perform target-device validation elsewhere.
+The proposed baseline applies to Rust libraries, services, tools, and mixed-language repositories that can run portable host-side checks in GitHub Actions. Repository adoption will identify required Cargo files, branch triggers, workflow permissions, package selection, optional checks, and excluded target-only validation.
 
-Repository adoption should document:
-
-- required files such as `Cargo.toml`, `Cargo.lock`, and optional `deny.toml`
-- expected branch triggers
-- required GitHub permissions
-- optional checks enabled or deferred
-- target-only validation that is not represented by host-side CI
-
-The CMF team should receive the approved workflow templates and supporting files as the default Rust CI package for new Rust repositories.
+After final SIG review, the approved workflow package and adoption guidance will be handed to CMF for use with new Rust repositories. Component teams will retain responsibility for repository-specific settings and target-platform validation.
 
 ## Security Considerations
 
-The default pipeline should include `cargo audit` so vulnerable direct and transitive crate dependencies are detected in CI.
+`cargo audit` provides visibility into known vulnerable direct and transitive dependencies. `cargo deny` provides policy checks for dependency licenses, banned crates, sources, and advisories.
 
-Repositories that enable `cargo deny` should define an explicit dependency policy for licenses, banned crates, and allowed dependency sources. Temporary exceptions should be narrow, documented, reviewed, and tied to a target resolution date.
+Workflow permissions should remain read-only by default. Workflows that post pull-request comments, including coverage and RSS reports, require documented pull-request write permission and must account for the restricted tokens used by pull requests from forks.
 
-Workflow permissions should remain read-only unless a workflow requires additional access, such as posting a pull request coverage comment.
+Exceptions must be narrow, documented, reviewed, assigned to an owner, and given a target resolution date.
 
 ## Resource Impact
 
-The minimum checks are expected to be practical for normal pull request CI.
+The task-force effort is limited because the reference workflows already exist. Remaining work consists mainly of review coordination, agreed edits, documentation, and handoff.
 
-Optional checks may increase CI runtime:
-
-- `cargo deny` adds dependency graph policy evaluation
-- `cargo hack` can multiply test runs across feature combinations
-- `cargo llvm-cov` reruns tests with coverage instrumentation
-
-Repositories should tune optional checks for large workspaces, embedded constraints, target-only crates, and components with platform-bound dependencies.
+For repositories adopting the workflows, Clippy, host-side tests, and dependency checks are expected to fit normal pull-request CI budgets. Feature testing and coverage instrumentation can increase CI runtime. RSS reporting requires a runnable host binary and is not applicable to every repository.
 
 ## Portability Considerations
 
-The default pipeline should rely on standard Cargo tooling and portable Linux CI runners where possible.
+The shared workflows will use standard Cargo tooling and portable Linux runners where practical.
 
-Host-side CI does not replace target validation for RDK-B components that depend on device services, platform-specific FFI, SoC integrations, or cross-compilation behavior. Such repositories should keep host-side Rust checks enabled and document target-only validation separately.
+They will not build, test, or validate platform-specific FFI, platform-bound dependencies, SoC integrations, or device-service behavior. Validation of those areas remains the responsibility of component-specific target environments.
 
-The workflow templates should avoid vendor-specific assumptions unless a repository explicitly opts into them.
+The IEEE1905 package names, RBUS exclusions, feature flags, and executable commands must not be treated as universal defaults; repositories will configure these values according to their structure.
+
+## Resulting Repository Changes
+
+If approved:
+
+- Activate the [Continuous Integration Task Force](../task-forces/ci.md) as the implementation and review record for this proposal.
+- Update the task-force record with the SIG decision and a link to the authoritative meeting record.
+- Update [Continuous Integration Guidelines](../guidelines/ci.md) with the agreed mandatory, optional, and repository-specific checks.
+- Track implementation and handoff actions in the [RDK Central Rust SIG GitHub project](https://github.com/orgs/rdkcentral/projects/119).
 
 ## Open Questions
 
-- Which parts of the pipeline should be mandatory for every Rust repository created through CMF?
-- Should the CMF team own the deployed default workflow, or should the Rust SIG remain the source of truth with CMF consuming approved releases?
-- How should repositories request exceptions from mandatory checks?
-- Should coverage reporting be advisory only, or should any minimum threshold be defined later?
-- How should target-device validation be linked back to the GitHub CI result?
+- Which checks must be enabled for every Rust repository created through CMF?
+- Should coverage and RSS reports remain advisory, or should repositories be able to define blocking thresholds?
+- How should repositories request and review exceptions from mandatory checks?
+- Will CMF own the deployed workflows, or will the Rust SIG publish approved versions for CMF to consume?
 
 ## References
 
-- [`guidelines/ci.md`](../guidelines/ci.md)
+- [Draft Continuous Integration Task Force](../task-forces/ci.md)
+- [Continuous Integration Guidelines](../guidelines/ci.md)
+- [Existing `ieee1905-rs` GitHub Actions workflows](https://github.com/rdkcentral/ieee1905-rs/tree/main/.github/workflows)
+- [RDK-B Rust SIG meeting notes, 2026-09-09](../meetings/2026-09-09.md)

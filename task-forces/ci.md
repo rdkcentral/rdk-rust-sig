@@ -2,17 +2,17 @@
 
 Status: proposed
 
-Linked proposal: [CI](../proposals/ci.md)
+Linked proposal: [Continuous Integration Guideline](../proposals/ci.md)
 
 Owner: @torrentius, @matrixdev, @SerhiiShchudlo _(Rust RDKm team)_
 
 CMF owner: @sbarre01
 
-Review date: 15-10-2026
+Review date: 2026-10-15
 
 ## Purpose
 
-Define, validate, and prepare for adoption a reusable GitHub Actions CI baseline for Rust repositories in the RDK-B stack. The task force will turn the CI proposal and guideline into workflow templates and supporting configuration that can be transferred to the CMF team.
+Execute the work defined by the Continuous Integration Guideline proposal. The task force will review the existing IEEE1905 workflows, prepare the proposed guideline and reusable CI baseline for final SIG review, and coordinate transfer to the CMF team.
 
 ## Scope
 
