@@ -43,31 +43,46 @@ The task force will provide consistent review signals across RDK-B Rust reposito
 
 ## Deliverables
 
-- Reusable GitHub Actions workflow implementing the agreed mandatory CI checks.
-- Optional workflow jobs or configuration for `cargo deny`, `cargo hack`, and `cargo llvm-cov`.
-- Supporting configuration examples, including dependency policy and workflow permissions where applicable.
-- Adoption guide covering prerequisites, branch triggers, customization, exceptions, and target-only validation.
-- Validation report from representative RDK-B Rust repositories, including CI runtime and compatibility findings.
-- CMF handoff package identifying ownership, versioning, maintenance, and rollout expectations.
+Review and document the existing `ieee1905-rs` GitHub Actions workflows as the initial reference implementation.
+
+### Code Quality and Testing
+
+- `rust-cargo-clippy.yml`: runs `cargo clippy` on pull requests to report Rust lint and code-quality issues.
+- `rust-cargo-tests.yml`: runs workspace unit tests while excluding the RBUS crates that require additional platform dependencies.
+- `rust-cargo-hack.yml`: runs `cargo hack test --package ieee1905` to exercise the package across supported feature combinations.
+
+### Compliance
+
+- `rust-cargo-deny.yml`: runs `cargo deny check` to enforce dependency license, banned-crate, allowed-source, and advisory policies defined in `deny.toml`.
+
+### Security
+
+- `rust-cargo-audit.yml`: runs `cargo audit` to identify known vulnerabilities in direct and transitive Rust dependencies.
+
+### Pull Request Review Information
+
+- `rust-cargo-coverage.yml`: uses `cargo llvm-cov` to generate a unit-test coverage summary and posts the result as a pull-request comment.
+- `rust-rss-usage-check.yml`: builds and briefly runs the release binary, collects Linux process memory values from `/proc`, and posts the RSS report on the pull request.
 
 ## Timeline
 
 | Milestone | Target Date | Output | Status |
 | --- | --- | --- | --- |
-| Kickoff | TBD | Scope, ownership, and validation repositories confirmed | proposed |
-| Baseline design review | TBD | Mandatory and optional checks agreed | proposed |
-| Workflow prototype | TBD | Reusable workflow and configuration examples available | proposed |
-| Repository validation | TBD | Validation findings and required adjustments recorded | proposed |
-| Final review and handoff | TBD | Approved CI package and CMF adoption guidance complete | proposed |
+| Kickoff | Available now | Scope, ownership, and validation repositories confirmed | available |
+| Baseline design review | Available now | Mandatory and optional checks agreed | available |
+| Workflow prototype | Available now | Reusable workflow and configuration examples available | available |
+| Repository validation | Available now | Validation findings and required adjustments recorded | available |
+| Final review | 2026-10-30 | CI package and CMF adoption guidance approved | planned |
+| CMF handoff | 2026-10-30 | Approved CI package and adoption guidance transferred to CMF | planned |
 
 ## Workforce and Resources
 
-- Task force lead: TBD
-- Contributors: Rust SIG members, CMF representatives, and maintainers of validation repositories
-- Reviewers: Rust SIG, CMF, repository maintainers, and security or licensing reviewers where required
-- Estimated effort: TBD after validation repositories and optional checks are selected
-- Required test devices or labs: None for the host-side baseline; component teams provide target validation where applicable
-- Required CI, build, or repository access: GitHub Actions access and permission to test the workflows in representative RDK-B Rust repositories
+- Task force owner: @torrentius
+- Required workforce: One task-force owner to coordinate review and handoff.
+- Estimated remaining effort: Limited. The workflows are already in place; the owner will collect and respond to comments, apply agreed changes, and coordinate final review and CMF handoff.
+- Review input: Rust SIG members, CMF representatives, and relevant repository maintainers provide comments through the normal review process; no dedicated implementation capacity is expected.
+- Required test devices or labs: Not applicable.
+- Required access: Existing GitHub repository and GitHub Actions access.
 
 ## RDK-B Integration
 
@@ -85,13 +100,11 @@ Workflow permissions will default to read-only. Additional permissions must be j
 
 Formatting, linting, host-side testing, and vulnerability scanning are expected to fit normal pull request CI budgets. Feature-matrix testing and coverage instrumentation can substantially increase runtime and compute use, so repositories may narrow these checks based on workspace size, risk, and available CI capacity.
 
-The validation report will record representative execution times and identify opportunities for caching or job parallelism without weakening required checks.
-
 ## Portability Considerations
 
 The workflow package will use standard Cargo tooling and portable Linux runners where practical. It will avoid vendor-specific build or device assumptions in the shared baseline.
 
-Repositories with cross-compilation, platform-specific FFI, SoC integration, or device-service dependencies will retain host-side checks and document their separate target validation.
+The shared workflows will not build, test, or validate platform-specific FFI, platform-bound dependencies, SoC integrations, or device-service behavior. Repositories may continue to run the portable host-side checks, but validation of these excluded areas remains the responsibility of component-specific target environments.
 
 ## Success Criteria
 
@@ -123,5 +136,6 @@ All action items must be created and tracked in the [RDK Central Rust SIG GitHub
 
 - [CI proposal](../proposals/ci.md)
 - [Continuous Integration Guidelines](../guidelines/ci.md)
+- [Existing `ieee1905-rs` GitHub Actions workflows](https://github.com/rdkcentral/ieee1905-rs/tree/main/.github/workflows)
 - [RDK-B Rust SIG meeting notes, 2026-09-09](../meetings/2026-09-09.md)
 - [RDK Central Rust SIG GitHub project](https://github.com/orgs/rdkcentral/projects/119)
