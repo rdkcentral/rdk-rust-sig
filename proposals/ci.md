@@ -51,8 +51,8 @@ The initial reference implementation contains the following workflows:
 ### Code Quality and Testing
 
 - `rust-cargo-clippy.yml` reports Rust lint and code-quality issues with `cargo clippy`.
-- `rust-cargo-tests.yml` runs workspace unit tests, with IEEE1905-specific exclusions for RBUS crates that require platform dependencies.
-- `rust-cargo-hack.yml` exercises supported feature combinations for the `ieee1905` package.
+- `rust-cargo-tests.yml` runs workspace unit tests, with exclusions for RBUS crates that require platform dependencies.
+- `rust-cargo-hack.yml` exercises supported feature combinations for the package.
 
 ### Compliance
 
@@ -67,7 +67,7 @@ The initial reference implementation contains the following workflows:
 - `rust-cargo-coverage.yml` generates a unit-test coverage summary and posts it on the pull request.
 - `rust-rss-usage-check.yml` runs the release binary, reads Linux process memory information from `/proc`, and posts an RSS report on the pull request.
 
-The CLA and IEEE1905 on-demand functional-test workflows are not part of this proposal.
+The CLA and on-demand functional-test workflows are not part of this proposal.
 
 ## Task-Force Mapping
 
@@ -75,7 +75,7 @@ The CLA and IEEE1905 on-demand functional-test workflows are not part of this pr
 | --- | --- | --- |
 | Define common and optional CI checks | Review the existing IEEE1905 code-quality, testing, compliance, and security workflows | Agreed classification of mandatory, optional, and repository-specific checks |
 | Provide useful pull-request review signals | Review coverage, RSS, compliance, and vulnerability reporting | Documented PR checks and reporting behavior |
-| Keep repository-specific settings configurable | Identify IEEE1905 package names, RBUS exclusions, feature flags, branches, and executable commands | Configuration and adoption guidance |
+| Keep repository-specific settings configurable | Identify  package names, RBUS exclusions, feature flags, branches, and executable commands | Configuration and adoption guidance |
 | Define portability boundaries | Record what shared host-side workflows do not test | Explicit exclusions for platform-specific FFI, dependencies, SoC integration, and device services |
 | Support adoption by new Rust repositories | Coordinate final review with the SIG and CMF | Reviewed guideline and workflow package ready for CMF handoff |
 
