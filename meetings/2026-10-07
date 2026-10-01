@@ -1,0 +1,20 @@
+# RDK-B Rust SIG Meeting - 2026-10-07
+
+## Agenda
+
+Governance explanation — ~15 minutes
+Guidelines explanation _starting with our CI guidelines as a proposal — ~15 minutes
+Proposal template — ~5 minutes
+Task force template — ~5 minutes
+Meeting slot proposal — ~5 minutes
+RDK observer proposal — ~15 minutes
+Please use this discussion to suggest any additional topics you think would be useful to cover during the meeting.
+
+Ideas could include:
+Technical topics
+SIG organization
+Development guidelines
+Reusable Rust components
+Tooling
+Integration with RDK
+Potential tasks or prototypes for the SIG
