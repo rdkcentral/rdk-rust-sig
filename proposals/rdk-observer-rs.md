@@ -35,7 +35,7 @@ Evaluate `rdk-observer-rs` as a reference architecture for RDK-B observability.
 It would collect system metrics from procfs, track selected processes with
 bounded adaptive sampling, use Aya/BPF lifecycle events when available, and
 fall back to periodic procfs discovery. Observation records would use a
-versioned CBOR schema with defined units, optional fields, and compatibility
+versioned protobuf schema with defined units, optional fields, and compatibility
 rules.
 
 Validate the prototype on representative RDK-B devices, measuring resource
@@ -79,13 +79,14 @@ lifecycle events while procfs remains the source of process snapshots.
 
 The current approaches appear to rely on logging records in a text-based format.
 Although text is easy to inspect, it can be less efficient to encode and process,
-and can increase storage, payload size, and transmission requirements. CBOR
-should be compared with the current text-based format on target hardware before
-its benefits are treated as proven.
+and can increase storage, payload size, and transmission requirements. The
+proposal should move to a protobuf observation format to improve portability to
+USP integrations and provide a more efficient representation than JSON or plain
+text.
 
 ## RDK-B Integration
 
-The observer should run as an independently deployable RDK-B service or library
+The observer should run as an independently deployable RDK-B service
 with a documented interface for process-selection policy, configuration,
 transport, and lifecycle reporting. Integration should identify ownership for:
 
@@ -114,7 +115,7 @@ details without approval.
 Measure CPU, DRAM, storage, network, startup, and shutdown costs, including
 worker, procfs, BPF, buffering, and record-encoding overhead. Configure sampling
 bounds, event coalescing, and backpressure, and establish device budgets before
-production adoption.
+ adoption.
 
 ## Portability Considerations
 
@@ -133,24 +134,25 @@ relevant SIG meeting record.
 
 ## Next Steps
 
-- Start a prototype of the proposed observer architecture.
-- Analyze and compare it with `meminsight` and `cpuprocanalyzer`, including
-	capabilities, security, resource use, portability, and production readiness.
-- Prepare conclusions and recommendations for presentation at the next SIG
-	meeting.
+1. Start with a simplified prototype that collects regular global snapshots
+   through procfs.
+2. Evaluate finer sampling granularity using a task per selected process, where
+   feasible within target-device resource budgets.
+3. Add BPF lifecycle events to detect short-lived processes, retaining periodic
+   procfs discovery as the fallback.
+4. Analyze and compare the prototype with `meminsight` and `cpuprocanalyzer`,
+   including capabilities, security, resource use, portability, and production
+   readiness.
+5. Prepare conclusions and recommendations for presentation at the next SIG
+   meeting.
 
 ## Open Questions
 
 - Who owns the observer, backend schema, and device integration?
 - Which process-selection modes, kernel versions, and BPF capabilities are required?
-- Which observations may leave the device?
-- What resource budgets, transport, target devices, and workloads define acceptance?
+- Which observations can be missed during sampling, fallback operation, or
+  overload, and what loss is acceptable?
+- Which observations may leave the device, in terms of privacy and data protection?
+- What resource budgets, target devices, and workloads define acceptance?
 
 ## References
-
-- [rdk-observer-rs](https://github.com/rdkcentral/rdk-observer-rs)
-- [ADR-0001: Collect System Resource Snapshots from procfs](https://github.com/rdkcentral/rdk-observer-rs/blob/main/docs/architecture/adr/0001-collect-system-resource-snapshots-from-procfs.md)
-- [ADR-0002: Schedule Per-Process Sampling Workers](https://github.com/rdkcentral/rdk-observer-rs/blob/main/docs/architecture/adr/0002-schedule-per-process-sampling-workers.md)
-- [ADR-0003: Trigger Process Capture with Aya and BPF Events](https://github.com/rdkcentral/rdk-observer-rs/blob/main/docs/architecture/adr/0003-trigger-process-capture-with-bpf-events.md)
-- [ADR-0004: Use CBOR for Observation Records](https://github.com/rdkcentral/rdk-observer-rs/blob/main/docs/architecture/adr/0004-use-cbor-for-observation-records.md)
-- [RDK-B Rust SIG README](../README.md)
