@@ -38,9 +38,12 @@ fall back to periodic procfs discovery. Observation records would use a
 versioned protobuf schema with defined units, optional fields, and compatibility
 rules.
 
-Validate the prototype on representative RDK-B devices, measuring resource
-overhead, sampling latency, event loss, record volume, and encoding cost before
-recommending production adoption.
+The reference devices for prototype validation will be RDK-ARM
+generic-compatible devices listed in the
+[meta-rdk-bsp-arm Hardware Support Table](https://github.com/rdkcentral/meta-rdk-bsp-arm/wiki/Hardware-Support-Table).
+Validate the prototype on these devices, measuring resource overhead, sampling
+latency, event loss, record volume, and encoding cost before recommending
+production adoption.
 
 ## Alternatives Considered
 
@@ -153,6 +156,6 @@ relevant SIG meeting record.
 - Which observations can be missed during sampling, fallback operation, or
   overload, and what loss is acceptable?
 - Which observations may leave the device, in terms of privacy and data protection?
-- What resource budgets, target devices, and workloads define acceptance?
+- What resource budgets and workloads define acceptance on the reference devices?
 
 ## References
