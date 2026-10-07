@@ -199,7 +199,7 @@ toolchains, process counts, etc.
    procfs discovery as the fallback.
 4. Compare `meminsight` output with the prototype record contract, including
    T2-compatible JSON output and USP integration requirements.
-5. Prepare prototype.
+5. Present prototype.
 
 ## Open Questions
 
