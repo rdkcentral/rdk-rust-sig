@@ -34,9 +34,17 @@ kernel capabilities across devices.
 Evaluate `rdk-observer-rs` as a reference architecture for RDK-B observability.
 It would collect system metrics from procfs, track selected processes with
 bounded adaptive sampling, use Aya/BPF lifecycle events when available, and
-fall back to periodic procfs discovery. Observation records would use a
+fall back to Linux process connector events over netlink when BPF is unavailable.
+If neither event source is usable, it would fall back to periodic procfs
+discovery. Observation records would use a
 versioned protobuf schema with defined units, optional fields, and compatibility
 rules.
+
+eBPF adds programmable filtering, richer event data, and access to additional
+tracing hooks. Both eBPF and netlink provide event-driven lifecycle tracking.
+eBPF could improve efficiency by filtering for selected processes before emitting
+records, reducing event traffic and userspace processing. A memory-mapped
+could also reduce event transfer overhead. 
 
 The reference devices for prototype validation will be RDK-ARM
 generic-compatible devices listed in the
@@ -58,6 +66,47 @@ capabilities and metrics, integration requirements, resource overhead,
 portability, security, production readiness, maintainability, testing, and
 sound coding practices before making a recommendation.
 
+The analysis should include the issues observed in the current command-driven
+implementations:
+
+- every sample can create extra child processes;
+- results depend on the shell, `PATH`, and the exact BusyBox version;
+- parsers depend on the text output of external commands;
+- errors from child commands are not always checked; and
+- commands built from input can be unsafe.
+
+These issues can make CPU overhead much higher than the cost of a small
+single-purpose binary. They also make behavior harder to reproduce across
+RDK-B devices with different BusyBox builds, shell behavior, and available
+command options.
+
+The review should also account for memory-correctness issues found during
+analysis of the existing implementations:
+
+- `ReadProcessName()` looks for `(` without checking that it was found, so a
+  malformed string can cause an out-of-bounds access.
+- `ReadProcStat()` checks `fscanf()` only for `EOF`, rather than checking the
+  number of fields read successfully.
+- `GetMemParams()` and `GetUsedMemory()` can continue with zero or incomplete
+  values when expected fields are missing.
+- `GetValuesFromFile()` checks `strValue[strlen(strValue)]`, which is already
+  the terminating `\0`, not a newline.
+- `OutFilename()` passes the `sizeof` of another local buffer instead of the
+  actual destination buffer size.
+- `monitorSysLevel` can remain `true` after the first missing process list and
+  change the behavior of later iterations.
+- the `Idle%` field in `loadandmem.data` is filled by `GetUsedPercent()`, so
+  the field name may not match its value.
+- `MonitorAllProcess=1` is not compatible with BusyBox `ps` syntax, but this
+  condition is not returned to the user as a failure.
+
+A Rust implementation can improve memory correctness by parsing procfs and
+system files with bounded string handling, typed results, explicit error
+propagation, checked optional fields, and tests for malformed input. It should
+prefer direct reads from stable Linux interfaces over shell pipelines, and it
+should treat missing fields, unsupported BusyBox syntax, child-process
+failures, and malformed records as explicit errors or degraded-mode states.
+
 ### Continue with current independent observers
 
 The current `meminsight` and `cpuprocanalyzer` approaches appear to overlap
@@ -65,27 +114,40 @@ with each other in resource observation and analysis. Continuing to develop
 them independently could duplicate implementation and platform validation
 work, and lead to inconsistent records, interfaces, and operational behavior.
 
-### Use periodic procfs scans only
+Based on the analysis above, deploying the current implementations unchanged
+could also harm production reliability. Repeated child-process creation adds
+CPU and transient memory overhead on constrained devices and can distort the
+resource measurements themselves. Shell and BusyBox dependencies can cause
+device-specific failures, while unchecked command failures, incomplete parsing,
+and persistent sampling state can silently produce missing or misleading
+telemetry. Buffer-handling defects can cause invalid memory access or observer
+crashes, and commands constructed from input can introduce command-injection
+risks when that input is not trusted.
 
-This is broadly portable and avoids a BPF dependency, but it can miss short-lived
-processes and delays process lifecycle handling until the next scan. It should
-remain the fallback path, not the only target architecture.
-
-### Collect full process data in BPF
-
-This could reduce user-space discovery latency, but it increases kernel-side
-complexity, portability constraints, permissions requirements, and the risk of
-placing policy and snapshot logic in the wrong layer. BPF should emit compact
-lifecycle events while procfs remains the source of process snapshots.
+Continuing with these observers would therefore require fixing the identified
+defects, reporting collection failures explicitly, validating metric meanings,
+and measuring overhead under representative production workloads. Direct procfs
+reads and validated parsing could improve the existing implementations; a Rust
+implementation could additionally use safe buffer handling and typed errors to
+address memory-safety risks. Rust alone does not correct metric semantics or
+sampling-state errors, so these behaviors still require explicit validation and
+tests before production adoption.
 
 ### Use a text-based observation format
 
-The current approaches appear to rely on logging records in a text-based format.
-Although text is easy to inspect, it can be less efficient to encode and process,
-and can increase storage, payload size, and transmission requirements. The
-proposal should move to a protobuf observation format to improve portability to
-USP integrations and provide a more efficient representation than JSON or plain
-text.
+The current approaches appear to rely on logging records in text-based formats.
+For example, `meminsight` supports CSV reports and optional JSON output for
+memory and CPU records. The JSON representation may be useful for compatibility
+with the existing T2 telemetry component, but it should be treated as an
+integration-specific format rather than the common observer contract if it is
+not compatible with USP data modeling, transport, or encoding requirements.
+
+Although text and JSON are easy to inspect, they can be less efficient to encode
+and process, and can increase storage, payload size, and transmission
+requirements. The proposal should move to a versioned protobuf observation
+format as the internal and transport-neutral record contract, then define
+explicit adapters for T2-compatible JSON and USP-compatible exposure where
+required.
 
 ## RDK-B Integration
 
@@ -118,22 +180,14 @@ details without approval.
 Measure CPU, DRAM, storage, network, startup, and shutdown costs, including
 worker, procfs, BPF, buffering, and record-encoding overhead. Configure sampling
 bounds, event coalescing, and backpressure, and establish device budgets before
- adoption.
+adoption.
 
 ## Portability Considerations
 
 Target Linux RDK-B devices using standard procfs interfaces and Rust crates.
 Detect unsupported kernel, BPF, Aya, and ring-buffer features and fall back to
 periodic procfs discovery. Validate supported SoCs, kernels, architectures,
-toolchains, process counts, and storage layouts; do not infer filesystem space
-from `/proc/diskstats`.
-
-## Resulting Repository Changes
-
-If approved, define the implementation plan, versioned schema, backend contract,
-RDK-B packaging and service integration, capability documentation, target-device
-benchmarks, and Rust/Yocto guidance. Record the decision and action items in the
-relevant SIG meeting record.
+toolchains, process counts, etc.
 
 ## Next Steps
 
@@ -143,19 +197,13 @@ relevant SIG meeting record.
    feasible within target-device resource budgets.
 3. Add BPF lifecycle events to detect short-lived processes, retaining periodic
    procfs discovery as the fallback.
-4. Analyze and compare the prototype with `meminsight` and `cpuprocanalyzer`,
-   including capabilities, security, resource use, portability, and production
-   readiness.
-5. Prepare conclusions and recommendations for presentation at the next SIG
-   meeting.
+4. Compare `meminsight` output with the prototype record contract, including
+   T2-compatible JSON output and USP integration requirements.
+5. Prepare prototype.
 
 ## Open Questions
 
-- Who owns the observer, backend schema, and device integration?
-- Which process-selection modes, kernel versions, and BPF capabilities are required?
 - Which observations can be missed during sampling, fallback operation, or
   overload, and what loss is acceptable?
 - Which observations may leave the device, in terms of privacy and data protection?
 - What resource budgets and workloads define acceptance on the reference devices?
-
-## References
