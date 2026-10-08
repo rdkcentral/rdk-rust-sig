@@ -117,7 +117,7 @@ The shared workflows will not build, test, or validate platform-specific FFI, pl
 
 ## Decisions
 
-No task-force decisions have been recorded. Decisions must link to the meeting record or proposal update where they were agreed.
+- [2026-10-7 SIG meeting](../meetings/2026-10-7.md#decisions): The CI proposal for a task force was approved, and creation of the CI/CD task force was assigned.
 
 ## Action Items
 
