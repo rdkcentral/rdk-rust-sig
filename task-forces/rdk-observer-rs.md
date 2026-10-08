@@ -59,7 +59,7 @@ Remaining milestone dates will be agreed once device access and resource budgets
 | Formation review | 2026-10-15 | Owner, contributors, scope, devices, and initial budgets confirmed | proposed |
 | Architecture review | 2026-10-22 | Sampling, schema, fallback, and integration approach reviewed | planned |
 | Global snapshot prototype | 2026-10-29 | Procfs collection and initial resource measurements available | planned |
-| Process sampling and event evaluation | To be agreed | Sampling granularity, lifecycle tracking, and fallback results recorded | proposed |
+| Process sampling and event evaluation | To be agreed | Sampling granularity, lifecycle tracking with events, and proper results recorded | proposed |
 | Reference-device comparison | To be agreed | Reproducible validation and existing-observer comparison complete | proposed |
 | Prototype presentation and final review | To be agreed | Findings, remaining gaps, and adoption recommendation presented | proposed |
 
