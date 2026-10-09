@@ -50,6 +50,7 @@ The initial reference implementation contains the following workflows:
 
 ### Code Quality and Testing
 
+- `rust-cargo-fmt.yml` reports Rust formatting issues with `cargo fmt --check`.
 - `rust-cargo-clippy.yml` reports Rust lint and code-quality issues with `cargo clippy`.
 - `rust-cargo-tests.yml` runs workspace unit tests, with exclusions for RBUS crates that require platform dependencies.
 - `rust-cargo-hack.yml` exercises supported feature combinations for the package.

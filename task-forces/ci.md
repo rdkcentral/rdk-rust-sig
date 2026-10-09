@@ -47,6 +47,7 @@ Review and document the existing `ieee1905-rs` GitHub Actions workflows as the i
 
 ### Code Quality and Testing
 
+- `rust-cargo-fmt.yml`: runs `cargo fmt --check` on pull requests to report Rust formatting issues.
 - `rust-cargo-clippy.yml`: runs `cargo clippy` on pull requests to report Rust lint and code-quality issues.
 - `rust-cargo-tests.yml`: runs workspace unit tests while excluding the RBUS crates that require additional platform dependencies.
 - `rust-cargo-hack.yml`: runs `cargo hack test --package ieee1905` to exercise the package across supported feature combinations.

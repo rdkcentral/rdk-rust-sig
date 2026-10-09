@@ -53,6 +53,36 @@ Validate the prototype on these devices, measuring resource overhead, sampling
 latency, event loss, record volume, and encoding cost before recommending
 production adoption.
 
+### BPF-to-netlink fallback
+
+Evaluate Linux process connector events over `NETLINK_CONNECTOR` as the
+intermediate fallback between Aya/BPF and periodic procfs discovery. Select
+the event source through runtime capability checks and successful subscription,
+with the following proposed order:
+
+1. Aya/BPF lifecycle events when the required kernel features and permissions
+   are available.
+2. Process connector events when BPF cannot be loaded or attached, or its event
+   source fails during operation.
+3. Periodic procfs discovery when neither event source is usable.
+
+Netlink support must be validated on each target kernel, including
+`CONFIG_CONNECTOR`, `CONFIG_PROC_EVENTS`, subscription permissions, and coverage
+of fork, exec, and exit events. It should not be assumed to provide the richer
+observations or programmable filtering available through BPF. See the
+[Linux process connector configuration](https://github.com/torvalds/linux/blob/master/drivers/connector/Kconfig).
+
+Keep periodic procfs reconciliation active with either event source to discover
+existing processes and repair tracking after lost events or source transitions.
+Netlink messages can be lost under memory pressure or receive-buffer overflow,
+as described in the
+[Linux connector documentation](https://docs.kernel.org/driver-api/connector.html#reliability).
+Report the active source, fallback reason, and detected loss; account for PID
+reuse when reconciling records. Validate startup failures, runtime source
+failures, event bursts, transition gaps, and resource overhead on reference
+devices. Procfs reconciliation cannot recover the lifecycle of a process that
+starts and exits between scans.
+
 ## Alternatives Considered
 
 During the most recent RTAB meeting, two existing projects were proposed as
@@ -164,14 +194,15 @@ transport, and lifecycle reporting. Integration should identify ownership for:
 
 The implementation should use standard Linux interfaces through standard,
 well-maintained Rust crates where available, avoid assuming a fixed device
-inventory, and preserve operation with periodic procfs discovery when Aya,
-required tracepoints, or the BPF ring buffer cannot be used.
+inventory, and evaluate process connector events over netlink when Aya,
+required tracepoints, or the BPF ring buffer cannot be used. Preserve operation
+with periodic procfs discovery when neither event source is usable.
 
 ## Security Considerations
 
-Use least privilege and document BPF capabilities, ownership, and service
-isolation. BPF should emit only minimal lifecycle events; transport must provide
-device authentication, integrity, and confidentiality. Validate procfs input,
+Use least privilege and document BPF and process connector permissions,
+ownership, and service isolation. BPF should emit only minimal lifecycle events;
+transport must provide device authentication, integrity, and confidentiality. Validate procfs input,
 bound record sizes, handle malformed data, and avoid exposing sensitive process
 details without approval.
 
@@ -185,9 +216,10 @@ adoption.
 ## Portability Considerations
 
 Target Linux RDK-B devices using standard procfs interfaces and Rust crates.
-Detect unsupported kernel, BPF, Aya, and ring-buffer features and fall back to
-periodic procfs discovery. Validate supported SoCs, kernels, architectures,
-toolchains, process counts, etc.
+Detect unsupported kernel, BPF, Aya, and ring-buffer features and evaluate
+process connector events over netlink before falling back to periodic procfs
+discovery. Validate connector support and permissions as well as supported
+SoCs, kernels, architectures, toolchains, and process counts.
 
 ## Next Steps
 
@@ -195,8 +227,9 @@ toolchains, process counts, etc.
    through procfs.
 2. Evaluate finer sampling granularity using a task per selected process, where
    feasible within target-device resource budgets.
-3. Add BPF lifecycle events to detect short-lived processes, retaining periodic
-   procfs discovery as the fallback.
+3. Add BPF lifecycle events to detect short-lived processes and evaluate process
+   connector events over netlink as the intermediate fallback, retaining
+   periodic procfs discovery and reconciliation in all modes.
 4. Compare `meminsight` output with the prototype record contract, including
    T2-compatible JSON output and USP integration requirements.
 5. Present prototype.
