@@ -4,6 +4,8 @@
 
 ## Attendees
 
+- [Affiliation] @github-id
+
 ## Discussion
 
 ## Decisions
