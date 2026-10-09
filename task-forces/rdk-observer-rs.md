@@ -2,7 +2,7 @@
 
 Status: proposed
 
-Linked proposal: [Adopt rdk-observer-rs as an RDK-B Rust Observer Reference Architecture](../proposals/rdk-observer-rs.md)
+Linked proposal: [Evaluate rdk-observer-rs as an RDK-B Rust Observer Reference Architecture](../proposals/rdk-observer-rs.md)
 
 Owner: Jose Diaz Martinez (proposed; assigned to coordinate formation)
 
