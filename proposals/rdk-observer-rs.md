@@ -1,4 +1,4 @@
-# Adopt rdk-observer-rs as an RDK-B Rust Observer Reference Architecture
+# Evaluate rdk-observer-rs as an RDK-B Rust Observer Reference Architecture
 
 Status: Approved
 
