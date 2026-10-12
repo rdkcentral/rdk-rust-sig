@@ -78,9 +78,9 @@ Review and document the existing `ieee1905-rs` GitHub Actions workflows as the i
 
 ## Workforce and Resources
 
-- Task force owner: @torrentius
-- Required workforce: One task-force owner to coordinate review and handoff.
-- Estimated remaining effort: Limited. The workflows are already in place; the owner will collect and respond to comments, apply agreed changes, and coordinate final review and CMF handoff.
+- Task-force coordinator: @torrentius
+- Required workforce: One task-force coordinator to coordinate review and handoff.
+- Estimated remaining effort: Limited. The workflows are already in place; the coordinator will collect and respond to comments, apply agreed changes, and coordinate final review and CMF handoff.
 - Review input: Rust SIG members, CMF representatives, and relevant repository maintainers provide comments through the normal review process; no dedicated implementation capacity is expected.
 - Required test devices or labs: Not applicable.
 - Required access: Existing GitHub repository and GitHub Actions access.
