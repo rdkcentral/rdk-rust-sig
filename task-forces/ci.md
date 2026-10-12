@@ -1,6 +1,6 @@
 # Continuous Integration Task Force
 
-Status: proposed
+Status: approved
 
 Linked proposal: [Continuous Integration Guideline](../proposals/ci.md)
 
