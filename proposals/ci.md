@@ -61,7 +61,13 @@ The initial reference implementation contains the following workflows:
 
 ### Security
 
-- `rust-cargo-audit.yml` identifies known vulnerabilities in direct and transitive Rust dependencies.
+GitHub Security should be enabled for all `rdkcentral` Rust projects. Clippy, `cargo audit`, and `cargo deny` workflows should output SARIF reports and upload them to GitHub Security when it is enabled:
+
+- Clippy can use `clippy-sarif` to produce SARIF reports
+- Audit supports an option `--format sarif`
+- Deny supports an option `--format sarif`
+
+SARIF reports should be uploaded with the `github/codeql-action/upload-sarif` action with a distinct `category` (`clippy`, `cargo-audit`, `cargo-deny`)
 
 ### Pull Request Review Information
 
