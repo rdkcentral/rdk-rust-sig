@@ -1,0 +1,59 @@
+Discussion
+
+CI workflow integration into CMF
+
+CI YAML workflows successfully tested
+CMF alignment is next, including whether workflows should ultimately be mandatory
+Stage 1 should treat the workflows as recommendations rather than requirements
+Rust repository template is being developed
+
+SARIF integration
+
+Chris is reviewing the CI workflows and SARIF integration
+Goal is to centralize security findings in GitHub Security
+Continue discussion in Slack and as part of Phase 2
+
+RDK Observer task force
+
+Initial tasks completed and prototype targeted before the next meeting
+Work continues on process registry, TR-181 integration and forensic-mode triggering
+Justin starting work on the data model / Rust FFI approach
+Elaine working on anomaly ranking to trigger forensic mode
+Core functionality targeted around EOY, with forensic mode targeted for February
+Contributors encouraged to pick up available project tasks
+
+Supporting older Rust compiler versions
+
+Discussed approaches for supporting older rustc versions without impacting Kirkstone
+Sergio described SFR’s meta-rust-bin approach for supporting different compiler versions by project
+Additional approaches should be evaluated before making a recommendation
+Evaluate whether an additional Cargo compiler/version check would be useful
+
+Dependency update policy
+
+Discussed policies for Cargo.toml / Cargo.lock updates, testing and CV scanning
+Charter described its nightly build, CV scanning and review process
+Additional detail needed before defining a recommended community approach
+
+CMF CVE review
+
+Review of current component Cargo.toml files deferred due to time
+Decisions
+Stage 1 CI workflows will be recommendations rather than requirements
+Multiple approaches to older Rust compiler support will be evaluated before establishing a recommendation
+Action Items
+Chris: Continue SARIF/CI proposal and CMF CVE follow-up
+Elaine: Progress anomaly ranking / forensic-mode trigger
+Justin: Develop TR-181 data model / Rust FFI approach
+Justin: Document Charter dependency and CV scanning approach
+Sergio: Document SFR approach to Rust compiler version support
+José: Continue RDK Observer work toward prototype demo
+Next Meeting Topics
+RDK Observer prototype demo and feedback
+TR-181 data model / Rust FFI approach
+Anomaly ranking and forensic-mode trigger
+SFR approach to older/multiple Rust compiler versions
+Charter dependency update and CV scanning process
+Cargo compiler/version compatibility check
+SARIF / GitHub Security integration
+CMF CVE review of existing Cargo.toml files
